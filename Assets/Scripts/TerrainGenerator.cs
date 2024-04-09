@@ -5,54 +5,46 @@ using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
     
+    [SerializeField] private int minDistanceFromPlayer;
     [SerializeField] private int maxTerrainCount;
     [SerializeField] private List<TerrainData> terrainDatas = new List<TerrainData>();
     [SerializeField] private Transform terrainHolder;
 
 
-    private Vector3 currentPosition = new Vector3(0, 0, 0);
+    [HideInInspector] private Vector3 currentPosition = new Vector3(0, 0, 0);
     private List<GameObject> currentTerrains = new List<GameObject>();
 
     private void Start() 
     {
         for (int i = 0; i < maxTerrainCount; i++)
         {
-            SpawnTerrain(true);
+            SpawnTerrain(true, new Vector3(0, 0, 0));
         }
         maxTerrainCount = currentTerrains.Count;
     }
 
-    private void Update() 
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            SpawnTerrain(false);
-        }
-    }
-
     // The method adds a lane of grass, roads or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane
-    private void SpawnTerrain(bool isStart)
+    public void SpawnTerrain(bool isStart, Vector3 playerPos)
     {
-        int whichTerrain = Random.Range(0, terrainDatas.Count);
-        int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
-        for (int i = 0; i < terrainInSuccession; i++)
+        if ((currentPosition.x - playerPos.x < minDistanceFromPlayer) || isStart)
         {
-            GameObject terrain = Instantiate(terrainDatas[Random.Range(0, terrainDatas.Count)].terrain, currentPosition, Quaternion.identity, terrainHolder);
-            currentTerrains.Add(terrain);
-            if (!isStart)
+            int whichTerrain = Random.Range(0, terrainDatas.Count);
+            int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
+            for (int i = 0; i < terrainInSuccession; i++)
             {
-                if (currentTerrains.Count > maxTerrainCount)
+                GameObject terrain = Instantiate(terrainDatas[Random.Range(0, terrainDatas.Count)].terrain, currentPosition, Quaternion.identity, terrainHolder);
+                currentTerrains.Add(terrain);
+                if (!isStart)
                 {
-                    Destroy(currentTerrains[0]); // Removes the object from the view (not visible afterwards anymore)
-                    currentTerrains.RemoveAt(0); // Removes the object from the list
+                    if (currentTerrains.Count > maxTerrainCount)
+                    {
+                        Destroy(currentTerrains[0]); // Removes the object from the view (not visible afterwards anymore)
+                        currentTerrains.RemoveAt(0); // Removes the object from the list
+                    }
                 }
+                currentPosition.x++;
             }
-            currentPosition.x++;
         }
-        
-        /*
-        GameObject terrain = Instantiate(terrains[Random.Range(0, terrains.Count)], currentPosition, Quaternion.identity);
-        */
     }
 
 }

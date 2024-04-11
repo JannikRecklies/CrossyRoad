@@ -32,7 +32,7 @@ public class TerrainGenerator : MonoBehaviour
             int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
             for (int i = 0; i < terrainInSuccession; i++)
             {
-                GameObject terrain = Instantiate(terrainDatas[Random.Range(0, terrainDatas.Count)].terrain, currentPosition, Quaternion.identity, terrainHolder);
+                GameObject terrain = Instantiate(terrainDatas[whichTerrain].possibleTerrains[Random.Range(0, terrainDatas[whichTerrain].possibleTerrains.Count)], currentPosition, Quaternion.identity, terrainHolder);
                 currentTerrains.Add(terrain);
                 if (!isStart)
                 {

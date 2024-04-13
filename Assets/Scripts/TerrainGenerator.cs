@@ -5,8 +5,7 @@ using UnityEngine;
 public class TerrainGenerator : MonoBehaviour
 {
 
-    [SerializeField] private int minDistanceFromPlayer = 1;
-
+    [SerializeField] private int minDistanceFromPlayer;
     [SerializeField] private int maxTerrainCount;
     [SerializeField] private List<TerrainData> terrainDatas = new List<TerrainData>();
     [SerializeField] private Transform terrainHolder;
@@ -17,25 +16,26 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Start()
     {
-        // Spawn initial grass terrains
         for (int i = 0; i < maxTerrainCount; i++)
         {
+            // neue Method anlegen für Gras initialisierung
             SpawnTerrain(true, new Vector3(0, 0, 0), true);
         }
         maxTerrainCount = currentTerrains.Count;
     }
-
 
     // The method adds a lane of grass, roads or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane
     public void SpawnTerrain(bool isStart, Vector3 playerPos, bool forceGrass = false)
     {
         if ((currentPosition.x - playerPos.x < minDistanceFromPlayer) || isStart)
         {
-            int whichTerrain = 0; // Default to grass terrain
+            int whichTerrain = 0;
+
             if (!isStart && !forceGrass)
             {
                 whichTerrain = Random.Range(0, terrainDatas.Count);
             }
+
 
             int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
             for (int i = 0; i < terrainInSuccession; i++)
@@ -52,13 +52,10 @@ public class TerrainGenerator : MonoBehaviour
                 }
                 currentPosition.x++;
             }
+
+
+
         }
     }
-
-
-
-
-
-
 
 }

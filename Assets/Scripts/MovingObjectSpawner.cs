@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleSpawner : MonoBehaviour
+public class MovingObjectSpawner : MonoBehaviour
 {
 
-    [SerializeField] private GameObject vehicle;
+    [SerializeField] private GameObject movingObject;
     [SerializeField] private Transform spawnPos;
     [SerializeField] private float minSperarationTime;
     [SerializeField] private float maxSperarationTime;
@@ -13,16 +13,16 @@ public class VehicleSpawner : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnVehicle());
+        StartCoroutine(SpawnObject());
     }
 
     // Update is called once per frame
-    private IEnumerator SpawnVehicle()
+    private IEnumerator SpawnObject()
     {
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minSperarationTime, maxSperarationTime));
-            GameObject go = Instantiate(vehicle, spawnPos.position, Quaternion.identity);
+            GameObject go = Instantiate(movingObject, spawnPos.position, Quaternion.identity);
             if (!isRightSide)
             {
                 go.transform.Rotate(new Vector3(0, 180, 0));

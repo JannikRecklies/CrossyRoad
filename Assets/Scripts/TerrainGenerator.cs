@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
-    
-    [SerializeField] private int minDistanceFromPlayer;
+
+    [SerializeField] private int minDistanceFromPlayer = 1;
+
     [SerializeField] private int maxTerrainCount;
     [SerializeField] private List<TerrainData> terrainDatas = new List<TerrainData>();
     [SerializeField] private Transform terrainHolder;
@@ -14,21 +15,28 @@ public class TerrainGenerator : MonoBehaviour
     [HideInInspector] private Vector3 currentPosition = new Vector3(0, 0, 0);
     private List<GameObject> currentTerrains = new List<GameObject>();
 
-    private void Start() 
+    private void Start()
     {
+        // Spawn initial grass terrains
         for (int i = 0; i < maxTerrainCount; i++)
         {
-            SpawnTerrain(true, new Vector3(0, 0, 0));
+            SpawnTerrain(true, new Vector3(0, 0, 0), true);
         }
         maxTerrainCount = currentTerrains.Count;
     }
 
+
     // The method adds a lane of grass, roads or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane
-    public void SpawnTerrain(bool isStart, Vector3 playerPos)
+    public void SpawnTerrain(bool isStart, Vector3 playerPos, bool forceGrass = false)
     {
         if ((currentPosition.x - playerPos.x < minDistanceFromPlayer) || isStart)
         {
-            int whichTerrain = Random.Range(0, terrainDatas.Count);
+            int whichTerrain = 0; // Default to grass terrain
+            if (!isStart && !forceGrass)
+            {
+                whichTerrain = Random.Range(0, terrainDatas.Count);
+            }
+
             int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
             for (int i = 0; i < terrainInSuccession; i++)
             {
@@ -38,13 +46,19 @@ public class TerrainGenerator : MonoBehaviour
                 {
                     if (currentTerrains.Count > maxTerrainCount)
                     {
-                        Destroy(currentTerrains[0]); // Removes the object from the view (not visible afterwards anymore)
-                        currentTerrains.RemoveAt(0); // Removes the object from the list
+                        Destroy(currentTerrains[0]);
+                        currentTerrains.RemoveAt(0);
                     }
                 }
                 currentPosition.x++;
             }
         }
     }
+
+
+
+
+
+
 
 }

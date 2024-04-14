@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1849282322220637003}
   - component: {fileID: 7214617369013284634}
   - component: {fileID: 8625400403057476183}
+  - component: {fileID: 4028259245091152738}
   m_Layer: 0
   m_Name: Jeep
   m_TagString: Untagged
@@ -52,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4256ccc51fafe4554bccf5a52e477706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 5
 --- !u!65 &7214617369013284634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72,8 +73,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.8, y: 3.42, z: 6.94}
+  m_Center: {x: -0.24, y: 1.36, z: 1.28}
 --- !u!114 &8625400403057476183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +87,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d121cd042ddc145e8bbc7587c59beb38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &4028259245091152738
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8303154271163449144}
+  serializedVersion: 4
+  m_Mass: 100000
+  m_Drag: 100000
+  m_AngularDrag: 100000
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &111794554956753442
 PrefabInstance:
   m_ObjectHideFlags: 0

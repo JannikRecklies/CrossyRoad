@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private TerrainGenerator terrainGenerator;
     [SerializeField] private Text scoreText;
+    [SerializeField] private LayerMask layerToHit;
 
     private Animator animator;
     private bool isHopping;
@@ -33,16 +35,25 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
+                transform.parent = null;
                 TryMoveCharacter(Vector3.right); // Move to the right (positive X direction)
+                terrainGenerator.SpawnTerrain(false, transform.position);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
+                transform.parent = null;
                 TryMoveCharacter(Vector3.forward); // Move forward (positive Z direction)
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
+                transform.parent = null;
                 TryMoveCharacter(Vector3.back); // Move backward (negative Z direction)
             }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                
+            }
+            
         }
     }
 
@@ -50,7 +61,7 @@ public class Player : MonoBehaviour
     {
         // Cast a ray in the specified direction
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 1f)) // Adjust the distance as needed
+        if (Physics.Raycast(transform.position, direction, out hit, 1f) || Physics.Raycast(transform.position, direction, out hit, 1f) ) // Adjust the distance as needed
         {
             // Check if the object hit by the ray is tagged as a static object
             if (hit.transform.CompareTag("StaticObject"))
@@ -71,35 +82,87 @@ public class Player : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter(Collision collision) {
-        if (collision.transform.tag == "StaticObject") {
-            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
-        }
-        if (collision.transform.GetComponent<MovingObject>() != null)
-        {
-            transform.parent = collision.collider.transform;
-        }    
-        else
-        {
-            transform.parent = null;
-        }
+ 
     }
 
     private void MoveCharacter(Vector3 difference)
     {
         animator.SetTrigger("hop");
         isHopping = true;
-        transform.position += difference;
-        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
-        Debug.Log(transform.position);
-        terrainGenerator.SpawnTerrain(false, transform.position);
+
+        if (IsLogNearFuturePosition(difference))
+        {
+            transform.position += difference;
+            float newZ = GetNewPositionOnLog(transform.localPosition.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, newZ);
+            if (newZ > 0.5 || newZ < -0.5)
+            {
+                transform.parent = null;
+            }
+            
+        } else {
+            transform.position += difference;
+            transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
+        }
     }
 
     public void FinishHop()
     {
         isHopping = false;
-        Debug.Log("Finished hop: " + transform.position);
+    }
 
+    private bool IsLogNearFuturePosition(Vector3 direction)
+    {
+        // Cast a ray in the player's forward direction to check for logs
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + direction, new Vector3(0, -1, 0), out hit, 2, layerToHit))
+        {
+            // Check if the ray hit a log
+            if (hit.collider.CompareTag("Log"))
+            {
+                transform.parent = hit.collider.transform;
+                return true;
+            }
+        }
+        if (Physics.Raycast(transform.position + direction + new Vector3(0,0,-1), new Vector3(0, -1, 0), out hit, 2, layerToHit))
+        {
+            // Check if the ray hit a log
+            if (hit.collider.CompareTag("Log"))
+            {
+                transform.parent = hit.collider.transform;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Function to set the value to the nearest target
+    float GetNewPositionOnLog(float value)
+    {
+        // Calculate the absolute differences
+        float diffToNeg066 = Mathf.Abs(value - (-0.66f));
+        float diffToNeg033 = Mathf.Abs(value - (-0.33f));
+        float diffToZero = Mathf.Abs(value - 0f);
+        float diffToPos033 = Mathf.Abs(value - 0.33f);
+        float diffToPos066 = Mathf.Abs(value - 0.66f);
+
+        // Find the minimum difference
+        float minDiff = Mathf.Min(diffToNeg066, diffToNeg033, diffToZero, diffToPos033, diffToPos066);
+        
+        // Set the value to the nearest target
+        if (minDiff == diffToNeg066)
+            return -1;
+        else if (minDiff == diffToNeg033)
+            return -0.33f;
+        else if (minDiff == diffToZero)
+            return 0f;
+        else if (minDiff == diffToPos033)
+            return 0.33f;    
+        else if (minDiff == diffToPos066)
+            return 1;    
+        else 
+            return value;
     }
 }

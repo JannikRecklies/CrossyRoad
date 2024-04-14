@@ -31,7 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.6185446, y: 4.4061103, z: -1.4993072}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5047959447246034544}
   m_Father: {fileID: 0}
@@ -50,6 +50,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainGenerator: {fileID: 0}
   scoreText: {fileID: 0}
+  layerToHit:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!65 &1001489846986714977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -149,7 +152,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.15, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5845151756754323871}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

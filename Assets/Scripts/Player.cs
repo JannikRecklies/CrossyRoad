@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
 
     [SerializeField] private TerrainGenerator terrainGenerator;
     [SerializeField] private Text scoreText;
-    [SerializeField] private LayerMask layerToHit;
 
     private Animator animator;
     private bool isHopping;
@@ -116,7 +115,7 @@ public class Player : MonoBehaviour
     {
         // Cast a ray in the player's forward direction to check for logs
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + direction, new Vector3(0, -1, 0), out hit, 2, layerToHit))
+        if (Physics.Raycast(transform.position + direction, new Vector3(0, -1, 0), out hit, 2))
         {
             // Check if the ray hit a log
             if (hit.collider.CompareTag("Log"))
@@ -125,7 +124,16 @@ public class Player : MonoBehaviour
                 return true;
             }
         }
-        if (Physics.Raycast(transform.position + direction + new Vector3(0,0,-1), new Vector3(0, -1, 0), out hit, 2, layerToHit))
+        if (Physics.Raycast(transform.position + direction + new Vector3(0,0,-1), new Vector3(0, -1, 0), out hit, 2))
+        {
+            // Check if the ray hit a log
+            if (hit.collider.CompareTag("Log"))
+            {
+                transform.parent = hit.collider.transform;
+                return true;
+            }
+        }
+        if (Physics.Raycast(transform.position + direction + new Vector3(0,0,1), new Vector3(0, -1, 0), out hit, 2))
         {
             // Check if the ray hit a log
             if (hit.collider.CompareTag("Log"))
@@ -142,17 +150,17 @@ public class Player : MonoBehaviour
     float GetNewPositionOnLog(float value)
     {
         // Calculate the absolute differences
-        float diffToNeg066 = Mathf.Abs(value - (-0.66f));
+        float diffToNeg08 = Mathf.Abs(value - (-0.8f));
         float diffToNeg033 = Mathf.Abs(value - (-0.33f));
         float diffToZero = Mathf.Abs(value - 0f);
         float diffToPos033 = Mathf.Abs(value - 0.33f);
-        float diffToPos066 = Mathf.Abs(value - 0.66f);
+        float diffToPos08 = Mathf.Abs(value - 0.8f);
 
         // Find the minimum difference
-        float minDiff = Mathf.Min(diffToNeg066, diffToNeg033, diffToZero, diffToPos033, diffToPos066);
+        float minDiff = Mathf.Min(diffToNeg08, diffToNeg033, diffToZero, diffToPos033, diffToPos08);
         
         // Set the value to the nearest target
-        if (minDiff == diffToNeg066)
+        if (minDiff == diffToNeg08)
             return -1;
         else if (minDiff == diffToNeg033)
             return -0.33f;
@@ -160,7 +168,7 @@ public class Player : MonoBehaviour
             return 0f;
         else if (minDiff == diffToPos033)
             return 0.33f;    
-        else if (minDiff == diffToPos066)
+        else if (minDiff == diffToPos08)
             return 1;    
         else 
             return value;

@@ -790,17 +790,6 @@ PrefabInstance:
       propertyPath: terrainHolder
       value: 
       objectReference: {fileID: 1736755640}
-    - target: {fileID: 1953194284779923384, guid: 47552040c952947359b4f6dc93265064,
-        type: 3}
-      propertyPath: terrainDatas.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1953194284779923384, guid: 47552040c952947359b4f6dc93265064,
-        type: 3}
-      propertyPath: 'terrainDatas.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 10275b7af78884b26802844b0b6e64ff,
-        type: 2}
     - target: {fileID: 3705986607168121044, guid: 47552040c952947359b4f6dc93265064,
         type: 3}
       propertyPath: m_LocalPosition.x

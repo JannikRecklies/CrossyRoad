@@ -48,6 +48,6 @@ MonoBehaviour:
   maxTerrainCount: 30
   terrainDatas:
   - {fileID: 11400000, guid: 30bb1b095387f4a5c8155abefc87af32, type: 2}
-  - {fileID: 11400000, guid: 8ccfca05d1974442e9c951297bbb952e, type: 2}
   - {fileID: 11400000, guid: 10275b7af78884b26802844b0b6e64ff, type: 2}
+  - {fileID: 11400000, guid: 8ccfca05d1974442e9c951297bbb952e, type: 2}
   terrainHolder: {fileID: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,48 +22,48 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         score++;
+        scoreText.text = "Score: " + score;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: " + score;
-
-        // Check for movement input only if the player is not currently hopping
+        // To allow movement input only if the player is not currently hopping
         if (!isHopping)
         {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                TryMoveCharacter(Vector3.right); // Move to the right (positive X direction)
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                TryMoveCharacter(Vector3.forward); // Move forward (positive Z direction)
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                TryMoveCharacter(Vector3.back); // Move backward (negative Z direction)
-            }
+            CheckMovementInput();
         }
     }
 
+    private void CheckMovementInput()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            TryMoveCharacter(Vector3.right); // Move to the right (positive X direction)
+            terrainGenerator.SpawnTerrain(false, transform.position);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            TryMoveCharacter(Vector3.forward); // Move forward (positive Z direction)
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            TryMoveCharacter(Vector3.back); // Move backward (negative Z direction)
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            // TODO: Implement moving backwards
+        }
+    }
+
+
     void TryMoveCharacter(Vector3 direction)
     {
-        // Cast a ray in the specified direction
+        // Cast a ray in the specified direction and check if moving would hit it
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 1f)) // Adjust the distance as needed
+        if (Physics.Raycast(transform.position, direction, out hit, 1f))
         {
-            // Check if the object hit by the ray is tagged as a static object
-            if (hit.transform.CompareTag("StaticObject"))
-            {
-                Debug.Log("Cannot move - static object in the way!");
-                // You can add additional logic here, such as playing a sound or displaying a message to the player
-            }
-            else
-            {
-                // If no static object is in the way, move the character
-                MoveCharacter(direction);
-            }
+            // For simplicity we cannot move as long as there is an object with a collider in the movement direction
+            Debug.Log("Cannot move - static object in the way!");
         }
         else
         {
@@ -71,35 +72,88 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.transform.tag == "StaticObject") {
-            transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
-        }
-        if (collision.transform.GetComponent<MovingObject>() != null)
-        {
-            transform.parent = collision.collider.transform;
-        }    
-        else
-        {
-            transform.parent = null;
-        }
-    }
-
-    private void MoveCharacter(Vector3 difference)
+    private void MoveCharacter(Vector3 direction)
     {
         animator.SetTrigger("hop");
         isHopping = true;
-        transform.position += difference;
-        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
-        Debug.Log(transform.position);
-        terrainGenerator.SpawnTerrain(false, transform.position);
+
+        Vector3 positionAfterMovement = transform.position + direction;
+        Transform possibleLog = GetLogNearFuturePosition(positionAfterMovement);
+
+        if (possibleLog != null)
+        {
+            transform.parent = possibleLog;
+            transform.localPosition = GetPlayerPositionOnLog(possibleLog, direction);
+            if (transform.localPosition.z > 0.5 || transform.localPosition.z < -0.5)
+            {
+                transform.parent = null;
+            }
+        } else {
+            transform.parent = null;
+            transform.position += direction;
+            transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
+        }
+    }
+
+    private Transform GetLogNearFuturePosition(Vector3 futurePosition)
+    {
+        RaycastHit hit;
+        // It is important to also check for logs that are close to the future position because the logs are moving and potentially take the spot of the movement (thats why positions left and right of the future position are checked)
+        Vector3[] positionsFromWhereToCheck = { futurePosition, futurePosition + new Vector3(0,0,-1), futurePosition + new Vector3(0,0,1) };
+
+        foreach (Vector3 position in positionsFromWhereToCheck)
+        {
+            if (Physics.Raycast(position, Vector3.down, out hit, 1) && hit.collider.CompareTag("Log"))
+            {
+                // Check if the ray hit a log
+                if (hit.collider.CompareTag("Log"))
+                {
+                    return hit.collider.transform;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // Function to set the value to the nearest target
+    private Vector3 GetPlayerPositionOnLog(Transform log, Vector3 direction)
+    {
+        // Check if log is rotated and change direction of movement as it is relative of logs direction
+        if (log.rotation.y < 1)
+        {
+            direction *= -1; 
+        }
+
+        Vector3 playerPositionOnLog = new Vector3(0, transform.localPosition.y, transform.localPosition.z - direction.z/3);
+
+        // Calculate the absolute differences
+        float diffToNeg08 = Mathf.Abs(playerPositionOnLog.z - (-0.8f));
+        float diffToNeg033 = Mathf.Abs(playerPositionOnLog.z - (-0.33f));
+        float diffToZero = Mathf.Abs(playerPositionOnLog.z - 0f);
+        float diffToPos033 = Mathf.Abs(playerPositionOnLog.z - 0.33f);
+        float diffToPos08 = Mathf.Abs(playerPositionOnLog.z - 0.8f);
+
+        // Find the minimum difference
+        float minDiff = Mathf.Min(diffToNeg08, diffToNeg033, diffToZero, diffToPos033, diffToPos08);
+        
+        // Set the value to the nearest target
+        if (minDiff == diffToNeg08)
+            playerPositionOnLog.z = -1;
+        else if (minDiff == diffToNeg033)
+            playerPositionOnLog.z = -0.33f;
+        else if (minDiff == diffToZero)
+            playerPositionOnLog.z = 0f;
+        else if (minDiff == diffToPos033)
+            playerPositionOnLog.z = 0.33f;    
+        else if (minDiff == diffToPos08)
+            playerPositionOnLog.z = 1;    
+        
+        return playerPositionOnLog;
     }
 
     public void FinishHop()
     {
         isHopping = false;
-        Debug.Log("Finished hop: " + transform.position);
-
     }
 }

@@ -12,7 +12,7 @@ public class MovingObject : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter(Collision other) {
+    private void OnTriggerEnter(Collider other) {
         if (other.transform.tag == "Despawn")
         {
             Destroy(gameObject);

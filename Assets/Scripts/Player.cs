@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     {
         // Cast a ray in the specified direction and check if moving would hit it
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, 1f))
+        if (Physics.Raycast(transform.position, direction, out hit, 1f) && hit.transform.tag == "StaticObject")
         {
             // For simplicity we cannot move as long as there is an object with a collider in the movement direction
             Debug.Log("Cannot move - static object in the way!");

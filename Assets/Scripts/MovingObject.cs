@@ -1,22 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
-    
     [SerializeField] private float speed;
+    private float currentSpeed;
 
-    void Update()
+    private void Start()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        currentSpeed = transform.CompareTag("Log") ? 3 * speed : speed;
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.transform.tag == "Despawn")
+    private void Update()
+    {
+        MoveObject();
+    }
+
+    private void MoveObject()
+    {
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Despawn"))
         {
             Destroy(gameObject);
         }
+        else if (transform.CompareTag("Log") && other.CompareTag("EdgeOfMap"))
+        {
+            ToggleSpeed();
+        }
     }
 
+    private void ToggleSpeed()
+    {
+        currentSpeed = (currentSpeed > speed) ? speed : 3 * speed;
+    }
 }

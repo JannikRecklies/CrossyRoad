@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
-    
+
     [SerializeField] private int minDistanceFromPlayer;
     [SerializeField] private int maxTerrainCount;
     [SerializeField] private List<TerrainData> terrainDatas = new List<TerrainData>();
@@ -14,14 +14,26 @@ public class TerrainGenerator : MonoBehaviour
     [HideInInspector] private Vector3 currentPosition = new Vector3(0, 0, 0);
     private List<GameObject> currentTerrains = new List<GameObject>();
 
-    private void Start() 
+    private void Start()
     {
+        SpawnGrassForStart();
         for (int i = 0; i < maxTerrainCount; i++)
         {
             SpawnTerrain(true, new Vector3(0, 0, 0));
         }
         maxTerrainCount = currentTerrains.Count;
     }
+
+    private void SpawnGrassForStart()
+    {
+        for (int i = 0; i < 4; i++) // Spawn grass terrains four times
+        {
+            GameObject grassTerrain = Instantiate(terrainDatas[0].possibleTerrains[0], currentPosition, Quaternion.identity, terrainHolder); // Assuming grass terrain is the first terrain in your list
+            currentTerrains.Add(grassTerrain);
+            currentPosition.x++;
+        }
+    }
+
 
     // The method adds a lane of grass, roads or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane
     public void SpawnTerrain(bool isStart, Vector3 playerPos)

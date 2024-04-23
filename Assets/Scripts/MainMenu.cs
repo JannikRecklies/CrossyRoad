@@ -7,10 +7,12 @@ public class MainMenu : MonoBehaviour
 
     public void GoToScene(string sceneName)
     {
+        // Disable the start canvas before loading the new scene
         startCanvas.enabled = false;
+
+        // Load the specified scene
         SceneManager.LoadScene(sceneName);
         Debug.Log("Application has started.");
-
     }
 
     public void QuitApp()

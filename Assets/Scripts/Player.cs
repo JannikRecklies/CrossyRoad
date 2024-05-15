@@ -13,10 +13,10 @@ public class Player : MonoBehaviour
     private bool isHopping;
     private int score;
 
-    public GameOver GameOver;
+    public GameOverScreen GameOverScreen;
 
-    public void GameOver() {
-        GameOver.SetUp(score);
+    public void GameOverScreen() {
+        GameOverScreen.SetUp(score);
     }
 
     private void Start()

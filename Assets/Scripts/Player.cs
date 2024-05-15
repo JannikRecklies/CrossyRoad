@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
     private bool isHopping;
     private int score;
 
+    public GameOver GameOver;
+
+    public void GameOver() {
+        GameOver.SetUp(score);
+    }
+
     private void Start()
     {
         animator = GetComponent<Animator>();

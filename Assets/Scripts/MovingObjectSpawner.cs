@@ -15,21 +15,36 @@ public class MovingObjectSpawner : MonoBehaviour
     void Start()
     {
         Vector3 temp = spawnPos.position;
-        int randomInitialSpawnPos = Mathf.RoundToInt(Random.Range(spawnPos.position.z - 20, spawnPos.position.z));
+        int randomInitialSpawnPos = Mathf.RoundToInt(Random.Range(spawnPos.position.z - 10, spawnPos.position.z));
         temp.z = randomInitialSpawnPos;
         SpawnObject(temp);
         StartCoroutine(SpawnObjectRoutine());
     }
 
-    private IEnumerator SpawnObjectRoutine() {
+    private IEnumerator SpawnObjectRoutine()
+    {
         while (true)
         {
-            int waitTime = Random.Range(minSperarationTime, maxSperarationTime);
-            yield return new WaitForSeconds(Mathf.RoundToInt(waitTime));
+            float waitTime = CalculateWaitTime();
+            yield return new WaitForSeconds(waitTime);
             SpawnObject(spawnPos.position);
         }
     }
 
+    private float CalculateWaitTime()
+    {
+        float waitTime = Random.Range(minSperarationTime, maxSperarationTime);
+        
+        if (movingObject.name == "Log")
+        {
+            MovingObject movingObjectScript = movingObject.GetComponent<MovingObject>();
+            int speed = movingObjectScript.GetSpeed();
+            float additionalWaitTime = Random.Range(0, speed+1) / (float)speed;
+            waitTime += additionalWaitTime;
+        }
+
+        return waitTime;
+    }
 
     // Update is called once per frame
     private void SpawnObject(Vector3 spawnPosition)

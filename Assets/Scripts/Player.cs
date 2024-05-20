@@ -39,19 +39,24 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             TryMoveCharacter(Vector3.right); // Move to the right (positive X direction)
+            transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 0, 0);
             terrainGenerator.SpawnTerrain(false, transform.position);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
             TryMoveCharacter(Vector3.forward); // Move forward (positive Z direction)
+            transform.GetChild(0).transform.rotation = Quaternion.Euler(0, -90, 0);
+
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             TryMoveCharacter(Vector3.back); // Move backward (negative Z direction)
+            transform.GetChild(0).transform.rotation = Quaternion.Euler(0, 90, 0);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            // TODO: Implement moving backwards
+            TryMoveCharacter(Vector3.left);
+            transform.GetChild(0).transform.rotation = Quaternion.Euler(0, -180, 0); // Rotate -90 degrees (or 270 degrees) around the Y axis
         }
     }
 

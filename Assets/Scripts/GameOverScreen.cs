@@ -1,36 +1,29 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
 {
-    public Text points;
+    public TextMeshProUGUI pointsText;
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-        GameEvents.OnPlayerDied += ShowGameOverScreen;
-    }
-
-    private void OnDestroy()
-    {
-        GameEvents.OnPlayerDied -= ShowGameOverScreen;
-    }
-
-    private void ShowGameOverScreen(int score)
-    {
+    public void SetUp(int score) {
         gameObject.SetActive(true);
-        Debug.Log(score);
-        //points.text = "Score: " + score.ToString();
+        pointsText.text = "Score: " + score.ToString();
+        Debug.Log("nksfnsdnfskndf");
     }
 
     public void QuitGame()
     {
+        Debug.Log("lksfnsfnsldf");
         Application.Quit();
     }
 
     public void Restart()
     {
+        gameObject.SetActive(false);
         SceneManager.LoadScene("MainScene");
+        Debug.Log("lksfnsfnsldf");
     }
+    
 }

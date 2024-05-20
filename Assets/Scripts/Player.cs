@@ -162,8 +162,9 @@ public class Player : MonoBehaviour
         isHopping = false;
     }
 
-    public int GetScore() {
-        return score;
+    public void Kill() {
+        Destroy(gameObject);
+        GameEvents.PlayerDied(score);
     }
 
 }

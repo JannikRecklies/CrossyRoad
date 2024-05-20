@@ -10,20 +10,19 @@ public class GameOverScreen : MonoBehaviour
     public void SetUp(int score) {
         gameObject.SetActive(true);
         pointsText.text = "Score: " + score.ToString();
-        Debug.Log("nksfnsdnfskndf");
     }
 
     public void QuitGame()
     {
-        Debug.Log("lksfnsfnsldf");
-        Application.Quit();
+        //Application.Quit();
+        gameObject.SetActive(false);
+        SceneManager.LoadScene("StartScreen");
     }
 
     public void Restart()
     {
         gameObject.SetActive(false);
         SceneManager.LoadScene("MainScene");
-        Debug.Log("lksfnsfnsldf");
     }
     
 }

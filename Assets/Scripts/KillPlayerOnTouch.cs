@@ -14,4 +14,12 @@ public class KillPlayerOnTouch : MonoBehaviour
             Destroy(player);            
         }
     }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.GetComponent<Player>() != null && transform.CompareTag("EdgeOfMap"))
+        {
+            FollowPlayer cam = GameObject.Find("Main Camera").GetComponent<FollowPlayer>();
+            cam.StopFollowingPlayer();
+        }
+    }
 }

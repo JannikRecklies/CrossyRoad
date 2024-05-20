@@ -8,6 +8,7 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private int minDistanceFromPlayer;
     [SerializeField] private int maxTerrainCount;
     [SerializeField] private List<TerrainData> terrainDatas = new List<TerrainData>();
+    [SerializeField] private List<GameObject> spawnTerrains = new List<GameObject>();
     [SerializeField] private Transform terrainHolder;
 
 
@@ -26,37 +27,80 @@ public class TerrainGenerator : MonoBehaviour
 
     private void SpawnGrassForStart()
     {
-        for (int i = 0; i < 4; i++) // Spawn grass terrains four times
+        for (int i = -10; i < 4; i++) 
         {
-            GameObject grassTerrain = Instantiate(terrainDatas[0].possibleTerrains[0], currentPosition, Quaternion.identity, terrainHolder); // Assuming grass terrain is the first terrain in your list
-            currentTerrains.Add(grassTerrain);
-            currentPosition.x++;
+            if (i <= -4)
+            {
+                Vector3 temp = new Vector3(i, 0, 0);
+                GameObject grassTerrain = Instantiate(spawnTerrains[Random.Range(0, spawnTerrains.Count)], temp, Quaternion.identity, terrainHolder); // Assuming grass terrain is the first terrain in your list
+                currentTerrains.Add(grassTerrain);    
+            }
+            else
+            {
+                GameObject grassTerrain = Instantiate(terrainDatas[0].possibleTerrains[0], currentPosition, Quaternion.identity, terrainHolder); // Assuming grass terrain is the first terrain in your list
+                currentTerrains.Add(grassTerrain);
+                currentPosition.x = i;
+            }
         }
     }
 
 
-    // The method adds a lane of grass, roads or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane
+    // The method adds a lane of grass, roads, or water randomly at the end of the field and removes the first lane. It basically makes the map move by one lane.
     public void SpawnTerrain(bool isStart, Vector3 playerPos)
     {
-        if ((currentPosition.x - playerPos.x < minDistanceFromPlayer) || isStart)
+        if (ShouldSpawnTerrain(isStart, playerPos))
         {
-            int whichTerrain = Random.Range(0, terrainDatas.Count);
+            int whichTerrain = DetermineNextTerrainType();
             int terrainInSuccession = Random.Range(1, terrainDatas[whichTerrain].maxInSuccession);
+
             for (int i = 0; i < terrainInSuccession; i++)
             {
-                GameObject terrain = Instantiate(terrainDatas[whichTerrain].possibleTerrains[Random.Range(0, terrainDatas[whichTerrain].possibleTerrains.Count)], currentPosition, Quaternion.identity, terrainHolder);
+                GameObject terrain = InstantiateTerrain(whichTerrain);
+
                 currentTerrains.Add(terrain);
+
                 if (!isStart)
                 {
-                    if (currentTerrains.Count > maxTerrainCount)
-                    {
-                        Destroy(currentTerrains[0]); // Removes the object from the view (not visible afterwards anymore)
-                        currentTerrains.RemoveAt(0); // Removes the object from the list
-                    }
+                    MaintainMaxTerrainCount();
                 }
+
                 currentPosition.x++;
             }
         }
     }
+
+    private bool ShouldSpawnTerrain(bool isStart, Vector3 playerPos)
+    {
+        return (currentPosition.x - playerPos.x < minDistanceFromPlayer) || isStart;
+    }
+
+    private int DetermineNextTerrainType()
+    {
+        GameObject lastTerrain = currentTerrains[currentTerrains.Count - 1];
+        
+        if (lastTerrain.name.ToLower().Contains("grass"))
+        {
+            // Ensure we do not choose grass again immediately after grass
+            return Random.Range(1, terrainDatas.Count);
+        }
+
+        return 0; // Default to the first terrain type (e.g., grass)
+    }
+
+    private GameObject InstantiateTerrain(int whichTerrain)
+    {
+        GameObject terrainPrefab = terrainDatas[whichTerrain].possibleTerrains[Random.Range(0, terrainDatas[whichTerrain].possibleTerrains.Count)];
+        return Instantiate(terrainPrefab, currentPosition, Quaternion.identity, terrainHolder);
+    }
+
+    private void MaintainMaxTerrainCount()
+    {
+        if (currentTerrains.Count > maxTerrainCount)
+        {
+            Destroy(currentTerrains[0]); // Removes the object from the view (not visible afterwards anymore)
+            currentTerrains.RemoveAt(0); // Removes the object from the list
+        }
+    }
+
 
 }

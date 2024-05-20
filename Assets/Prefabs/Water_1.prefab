@@ -10432,8 +10432,8 @@ MonoBehaviour:
   movingObjectPrefab: {fileID: 8475198744329738556, guid: b7ac559ff09dd468fa02397754050619,
     type: 3}
   spawnPosition: {fileID: 809050207452794769}
-  minSeparationTime: 3
-  maxSeparationTime: 6
+  minSeparationTime: 2
+  maxSeparationTime: 4
   isRightSide: 1
 --- !u!1 &7311190075755384940
 GameObject:

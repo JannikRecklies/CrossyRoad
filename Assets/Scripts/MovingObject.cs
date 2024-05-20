@@ -9,7 +9,7 @@ public class MovingObject : MonoBehaviour
 
     private void Start()
     {
-        currentSpeed = transform.CompareTag("Log") ? 3 * speed : speed;
+        currentSpeed = transform.CompareTag("Log") ? 3 * speed : speed+speedAddition;
     }
 
     private void Update()

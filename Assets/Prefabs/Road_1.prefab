@@ -641,6 +641,6 @@ MonoBehaviour:
   movingObjectPrefab: {fileID: 8303154271163449144, guid: 07b5a13fc42d641b4b2e6b2fa3465d4c,
     type: 3}
   spawnPosition: {fileID: 3495689096469828148}
-  minSeparationTime: 3
-  maxSeparationTime: 6
+  minSeparationTime: 2
+  maxSeparationTime: 4
   isRightSide: 1

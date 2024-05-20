@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b530875bec91a4a80b6c364429f64166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 114121321}
   gameOverScreen: {fileID: 1157092931}
 --- !u!1 &60731952
 GameObject:

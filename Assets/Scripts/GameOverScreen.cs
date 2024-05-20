@@ -1,16 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
 {
-
     public Text points;
-    // Start is called before the first frame update
-    public void Setup(int score)
+
+    private void Start()
+    {
+        gameObject.SetActive(false);
+        GameEvents.OnPlayerDied += ShowGameOverScreen;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.OnPlayerDied -= ShowGameOverScreen;
+    }
+
+    private void ShowGameOverScreen(int score)
     {
         gameObject.SetActive(true);
-        pointsText.text = "Score: " + score.ToString();
+        Debug.Log(score);
+        //points.text = "Score: " + score.ToString();
     }
 
     public void QuitGame()

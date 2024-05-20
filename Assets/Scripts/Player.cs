@@ -67,4 +67,9 @@ public class Player : MonoBehaviour
     {
         isHopping = false;
     }
+
+    public int GetScore() {
+        return score;
+    }
+
 }

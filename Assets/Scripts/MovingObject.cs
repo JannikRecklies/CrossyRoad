@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
-    [SerializeField] private int speed;
-    private int currentSpeed;
+    [SerializeField] private float speed;
+    private float currentSpeed;
+
+    private float speedAddition = 0;
 
     private void Start()
     {
@@ -34,10 +36,11 @@ public class MovingObject : MonoBehaviour
 
     private void ToggleSpeed()
     {
-        currentSpeed = (currentSpeed > speed) ? speed : 3 * speed;
+        currentSpeed = (currentSpeed > speed) ? speed+speedAddition : 3 * speed;
     }
 
-    public int GetSpeed() {
-        return speed;
+    public void SetAddtionalSpeed(float speedAdd) {
+        speedAddition = speedAdd;
     }
+
 }

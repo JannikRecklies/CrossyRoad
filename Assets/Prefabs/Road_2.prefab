@@ -422,11 +422,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d475374bbb2a44e1daad7ad711874a7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingObject: {fileID: 1401978359455988272, guid: 730b3e4c0ffc14b9586af12c002b02a0,
+  movingObjectPrefab: {fileID: 1401978359455988272, guid: 730b3e4c0ffc14b9586af12c002b02a0,
     type: 3}
-  spawnPos: {fileID: 8945822973175938286}
-  minSperarationTime: 3
-  maxSperarationTime: 6
+  spawnPosition: {fileID: 8945822973175938286}
+  minSeparationTime: 3
+  maxSeparationTime: 6
   isRightSide: 0
 --- !u!1 &6015796801258343429
 GameObject:

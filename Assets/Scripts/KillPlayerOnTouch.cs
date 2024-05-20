@@ -10,8 +10,8 @@ public class KillPlayerOnTouch : MonoBehaviour
         Player player = collision.collider.GetComponent<Player>();
         if(player != null)
         {
-            //GameEvents.PlayerDied(player.GetScore());
-            Destroy(player);            
+            GameEvents.PlayerDied(player.GetScore());
+            Destroy(player.gameObject);            
         }
     }
 

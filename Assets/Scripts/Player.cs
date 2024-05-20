@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Compression;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] private TerrainGenerator terrainGenerator;
-    [SerializeField] private Text scoreText;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private Animator animator;
     private bool isHopping;
@@ -21,8 +22,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        score++;
-        scoreText.text = "Score: " + score;
+        scoreText.text = "" + score;
     }
 
     void Update()
@@ -160,6 +160,11 @@ public class Player : MonoBehaviour
     public void FinishHop()
     {
         isHopping = false;
+        int currentPosition = Mathf.RoundToInt(gameObject.transform.position.x);
+        if (currentPosition > score)
+        {
+            score = currentPosition;
+        }
     }
 
     public void Kill() {

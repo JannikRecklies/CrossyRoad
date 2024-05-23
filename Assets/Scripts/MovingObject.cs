@@ -26,7 +26,11 @@ public class MovingObject : MonoBehaviour
     {
         if (other.CompareTag("Despawn"))
         {
-            gameObject.transform.DetachChildren();
+            Transform playerTransform = gameObject.transform.Find("Player");
+            if (playerTransform != null)
+            {
+                playerTransform.SetParent(null);
+            }
             Destroy(gameObject);
         }
         else if (transform.CompareTag("Log") && other.CompareTag("EdgeOfMap"))

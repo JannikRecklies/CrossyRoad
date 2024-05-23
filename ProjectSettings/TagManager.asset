@@ -8,6 +8,8 @@ TagManager:
   - Log
   - Despawn
   - EdgeOfMap
+  - Water
+  - Car
   layers:
   - Default
   - TransparentFX

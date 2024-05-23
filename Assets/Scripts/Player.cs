@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
     {
         animator.SetTrigger("hop");
         isHopping = true;
+        FindAnyObjectByType<AudioManager>().Play("Jump");
 
         Vector3 positionAfterMovement = transform.position + direction;
         Transform possibleLog = GetLogNearFuturePosition(positionAfterMovement);
@@ -167,8 +168,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int GetScore() {
+        return score;
+    }
+
     public void Kill() {
-        Destroy(gameObject);
+        GameObject cam = GameObject.Find("Main Camera");
+        cam.GetComponent<AudioListener>().enabled = true;
+        
+        gameObject.SetActive(false);
         GameEvents.PlayerDied(score);
     }
 

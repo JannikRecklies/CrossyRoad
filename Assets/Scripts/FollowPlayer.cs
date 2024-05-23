@@ -16,6 +16,7 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
+    // Important for end of river
     public void StopFollowingPlayer() {
         player = null;
     }

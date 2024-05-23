@@ -11,14 +11,28 @@ public class KillPlayerOnTouch : MonoBehaviour
         if(player != null)
         {
             player.Kill();
+            MakeSound();
         }
     }
 
+    // Happens when player on log
     private void OnTriggerEnter(Collider other) {
-        if(other.GetComponent<Player>() != null && transform.CompareTag("EdgeOfMap"))
+        Player player = other.GetComponent<Player>();
+        if(player != null && transform.CompareTag("EdgeOfMap"))
         {
             FollowPlayer cam = GameObject.Find("Main Camera").GetComponent<FollowPlayer>();
             cam.StopFollowingPlayer();
+        }
+    }
+
+    private void MakeSound() {
+        if (gameObject.CompareTag("Water"))
+        {
+            FindAnyObjectByType<AudioManager>().Play("WaterSplash");
+        }
+        if (gameObject.CompareTag("Car"))
+        {
+            FindAnyObjectByType<AudioManager>().Play("CarBump");
         }
     }
 }

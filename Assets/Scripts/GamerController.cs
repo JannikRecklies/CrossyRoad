@@ -12,6 +12,7 @@ public class GamerController : MonoBehaviour
 
     private void Start()
     {
+        //LocalizationManager.Read(); // Load localization data
         gameRunning = true;
         GameEvents.OnPlayerDied += ShowGameOverScreen;
     }

@@ -1,4 +1,5 @@
 Key,English,German
 MainScene.Pause.Pause,Pause,Pause
+MainScene.Pause.Resume,Resume,Weiter
 MainScene.Pause.GoToMenu,Go To Menu,Menü
 MainScene.Pause.Quit,Quit,Verlassen

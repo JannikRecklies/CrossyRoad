@@ -1,0 +1,5 @@
+Key,English,German
+MainScene.GameOver.GameOver,Game Over,Spiel vorbei
+MainScene.GameOver.Score,Score,Punkte
+MainScene.GameOver.Retry,Retry,Erneut versuchen
+MainScene.GameOver.Quit,Quit,Verlassen

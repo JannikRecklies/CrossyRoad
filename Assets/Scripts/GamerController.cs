@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleLocalization.Scripts;
 
 public class GamerController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class GamerController : MonoBehaviour
 
     private void Start()
     {
-        //LocalizationManager.Read(); // Load localization data
+        LocalizationManager.Read(); // Load localization data
         gameRunning = true;
         GameEvents.OnPlayerDied += ShowGameOverScreen;
     }

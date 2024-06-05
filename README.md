@@ -14,9 +14,12 @@ This project is a Unity-based implementation of the popular game "Crossy Road". 
 
 ## Installation
 
+(When using MacOS (tested on Apple Silicon) the game can also be started by running Crossy_Road_MacOS.app)
+
 1. **Clone the repository**:
-   ```sh
-   git clone https://github.com/JannikRecklies/CrossyRoad.git
+    ```sh
+    git clone https://github.com/JannikRecklies/CrossyRoad.git
+    ```
 
 2. **Open in Unity**:
     - Open Unity Hub.

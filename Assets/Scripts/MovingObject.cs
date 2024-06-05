@@ -26,6 +26,11 @@ public class MovingObject : MonoBehaviour
     {
         if (other.CompareTag("Despawn"))
         {
+            Transform playerTransform = gameObject.transform.Find("Player");
+            if (playerTransform != null)
+            {
+                playerTransform.SetParent(null);
+            }
             Destroy(gameObject);
         }
         else if (transform.CompareTag("Log") && other.CompareTag("EdgeOfMap"))
@@ -36,7 +41,7 @@ public class MovingObject : MonoBehaviour
 
     private void ToggleSpeed()
     {
-        currentSpeed = (currentSpeed > speed) ? speed+speedAddition : 3 * speed;
+        currentSpeed = (currentSpeed == speed*3) ? speed+speedAddition : 3 * speed;
     }
 
     public void SetAddtionalSpeed(float speedAdd) {

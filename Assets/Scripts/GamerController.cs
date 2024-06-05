@@ -24,8 +24,17 @@ public class GamerController : MonoBehaviour
 
     private void ShowGameOverScreen(int score) {
         gameRunning = false;
+        StartCoroutine(WaitAndShowGameOverScreen(score));
+    }
+
+    private IEnumerator WaitAndShowGameOverScreen(int score)
+    {
+        // Wait for 1 second
+        yield return new WaitForSeconds(0.5f);
+
         gameOverScreen.SetUp(score);
     }
+
 
     private void OnDestroy()
     {

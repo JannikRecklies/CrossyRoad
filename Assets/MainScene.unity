@@ -146,7 +146,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20738571}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &20738573
 Camera:
   m_ObjectHideFlags: 0
@@ -2681,6 +2681,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749494932}
   m_CullTransparentMesh: 1
+--- !u!1 &1781439482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1781439484}
+  - component: {fileID: 1781439483}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1781439483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781439482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4faf53da702d74546830e2319be56a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: GameOver
+    clip: {fileID: 8300000, guid: 04470e13b056c5b4b81d3834a5caa7a3, type: 3}
+    volume: 1
+    pitch: 1.076
+    source: {fileID: 0}
+  - name: Jump
+    clip: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+    volume: 0.1
+    pitch: 0.95
+    source: {fileID: 0}
+  - name: CarBump
+    clip: {fileID: 8300000, guid: 37a76f939acf2be468f8fd7f504e2624, type: 3}
+    volume: 0.498
+    pitch: 0.95
+    source: {fileID: 0}
+  - name: WaterSplash
+    clip: {fileID: 8300000, guid: 870ab7a4871e5d44092b7f05dd6c2ddd, type: 3}
+    volume: 0.422
+    pitch: 0.95
+    source: {fileID: 0}
+--- !u!4 &1781439484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781439482}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1850458401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3071,9 +3136,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5682283537127905261, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
+    - target: {fileID: 603235411409087898, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001489846986714977, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3982134605859232860, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5845151756754323871, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
@@ -3125,6 +3200,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6926794498870281844, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8932479259939217999, guid: f20ad71ef4a1f4844add35bf0d1c4e67,
         type: 3}
@@ -3225,3 +3305,4 @@ SceneRoots:
   - {fileID: 1349938777292796443}
   - {fileID: 1445065332}
   - {fileID: 1342743696}
+  - {fileID: 1781439484}

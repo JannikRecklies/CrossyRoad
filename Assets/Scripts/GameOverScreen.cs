@@ -19,9 +19,7 @@ public class GameOverScreen : MonoBehaviour
 
     public void QuitGame()
     {
-        //Application.Quit();
-        gameObject.SetActive(false);
-        SceneManager.LoadScene("StartScreen");
+        Application.Quit();
     }
 
     public void Restart()
